@@ -1,6 +1,8 @@
 from typing import Any, List, Optional, Tuple
 from images import *
+from graphviz import Digraph
 
+# Clase del nodo 
 class Node:
     def __init__(self, archivo):
         self.data= archivo
@@ -9,11 +11,13 @@ class Node:
         self.padre = None
         self.altura = 1
 
+# Clase del arbol
 class AVL:
     def __init__(self, nodo):
         self.raiz = None
 
     # REEQUILIBRIO
+    # Altura
     def altura_arbol(self, nodo):
         if nodo is None:
             return True
@@ -21,16 +25,26 @@ class AVL:
         ader = self.altura_arbol(nodo.der)
         return 1 + max(aizq, ader)
 
+    # Factor de balanceo 
     def factor (self, nodo):
         if nodo is None:
             return 0
         return  self.altura_arbol(nodo.der) - self.altura_arbol(nodo.izq)
 
+    # Funcion de equilibrio
+    
     def equilibrio (self, nodo):
         while nodo is not None:
             factor_equilibrio = self.factor(nodo)
 
-            if factor_equilibrio > 1:
+            if factor_equilibrio > 1 and nodo < raiz.izq:
+                return self.rotar_derecha(raiz)
+            if factor_equilibrio < -1 and nodo > raiz.der:
+                return self.rotar_izquierda(raiz)
+            if factor_equilibrio > 1 and nodo > raiz.izq:
+                raiz.izq = self.rotar_derecha(raiz)
+                return self.rotar_derecha(raiz)
+            if factor_equilibrio < -1 and nodo > raiz. 
                 if self.factor(nodo.der) >= 0:
                     nodo = self.rotar_izquierda(nodo)
                 else:
@@ -45,17 +59,16 @@ class AVL:
             nodo = nodo.padre
         return nodo
     
-    #ROTACIONES
+    #rotaciones
     def rotar_izquierda(self, nodo):
         hijo = nodo.der
         T2 = hijo.izq
-
+        
         hijo.izq = nodo
         nodo.der = T2
-
+        
         nodo.altura = 1 + max(self.altura_arbol(nodo.izq), self.altura_arbol(nodo.der))
         hijo.altura = 1 + max(self.altura_arbol(hijo.izq), self.altura_arbol(hijo.der))
-
         return hijo
 
     def rotar_derecha(self, hijo):
@@ -67,7 +80,6 @@ class AVL:
 
         hijo.altura = 1 + max(self.altura_arbol(hijo.izq), self.altura_arbol(hijo.der))
         nodo.altura = 1 + max(self.altura_arbol(nodo.izq), self.altura_arbol(nodo.der))
-
         return nodo
 
     # 
